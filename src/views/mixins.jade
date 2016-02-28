@@ -1,0 +1,24 @@
+
+mixin field(name, attr, type, val)
+	div.fieldwrapper.form-group
+		if type == "checkbox"
+			div.col-sm-offset-3.col-sm-7
+				div.checkbox
+					label
+						input(type='#{type}', data-attribute=(attr?'#{attr}':undefined) checked=(val==1?"checked":undefined), class="checkbox" )
+						| #{name}
+		else 
+			label.control-label.col-sm-3 #{name}
+			div.col-sm-7
+				input.form-control(type='#{type}', data-attribute=(attr?'#{attr}':undefined), value=(val?'#{val}':'') )
+				
+
+mixin boolfield(name, attr, on, val, classname)
+	div.fieldwrapper.form-group
+		label.control-label.col-sm-3 #{name}	
+		.col-lg-7
+			.input-group
+				span.input-group-addon
+					input(type='checkbox', checked=(on==1?"checked":undefined), class="checkbox")
+				input.form-control(class=(typeof classname=="undefined"?undefined:classname) type='text', data-attribute='#{attr}', value=(val?'#{val}':''))
+

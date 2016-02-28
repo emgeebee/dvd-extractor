@@ -1,0 +1,10 @@
+extends /layout
+
+block menu
+	include /inc/menu
+
+block content
+	for name in listToCheck
+		div.panel.panel-default
+			div.panel-body
+				p #{name}

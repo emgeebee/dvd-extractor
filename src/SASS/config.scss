@@ -1,0 +1,37 @@
+#config ul.config-menu{
+	width: 450px;
+	padding: 10px;
+}
+.panel-group{
+	margin-bottom: 10px;
+	.panel-default.wontExtract{
+		border-color: red;
+	}
+}
+.glyphicon.glyphicon-plus.add-property {
+	margin-left: 10px;
+	display:inline-block;
+}
+.extract{
+	padding: 10px;
+	background-color: #f5f5f5;
+	.extract-title{
+		text-align: center;
+	}
+	.image-btn.glyphicon{
+		font-weight: bold;
+		margin: 8px 0;
+	}
+}
+.stats{
+	a{
+		display: block;
+	}
+	margin-bottom: 10px;
+}
+.extracts-container .extract .fail-button{
+	display:none;
+}
+.extracts-container .extract.alert-danger .fail-button{
+	display:block;
+}

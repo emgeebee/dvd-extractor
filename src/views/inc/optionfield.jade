@@ -1,0 +1,11 @@
+
+include /mixins
+
+tr.optionfield
+	td(data-change-function='setKeyAttribute')
+		mixin field ('Option name', "", 'text', key)
+	td
+		mixin field ('Option value', key, 'text', option)
+	td
+		button.btn-xs.btn.btn-danger(data-click-function='removeProperty')
+			p.image-btn.remove-key-value.glyphicon.glyphicon-remove

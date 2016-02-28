@@ -1,0 +1,19 @@
+$font-stack:    Helvetica, sans-serif;
+$primary-color: #333;
+
+body {
+  font: 100% $font-stack;
+  color: $primary-color;
+}
+
+.content{
+	width: 500px;
+	margin: 0 auto;
+	margin-top: 80px;
+}
+.navbar.navbar-default {
+	position: fixed;
+	width: 100%;
+	top: 0;
+	z-index: 1000;
+}

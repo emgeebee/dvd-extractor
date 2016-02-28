@@ -1,0 +1,43 @@
+include /mixins
+
+div.extract.form-horizontal(class='#{extract.status}', data-item='1', data-object='1')
+	h5.extract-title Extract #{i}
+	if extract.logs
+		div.extract-history
+			for log in extract.logs
+				p #{log.complete} - #{log.log}
+	mixin field ('Extract title', '__fullname', 'text', extract.__fullname)
+	mixin field ('Force override?', 'override', 'checkbox', extract.override)
+	div.hidden
+		mixin field ('completeFlag', 'completeFlag', 'hidden', extract.completeFlag)
+	mixin field ('Use ffmpeg?', 'type', 'checkbox', extract.type)
+	mixin boolfield ('Use TV showname?', '__show', extract.tvFile, extract.__show, "show-field")
+	mixin boolfield ('Use Folder name?', '__foldername', extract.isFolderDiff, extract.__foldername, "")
+	
+	table.options.table.table-striped
+		tbody(data-attribute='options', data-object='1')
+			if extract.options
+				tr
+					th.key Key
+					th.val Value
+				each option, key in extract.options
+					include /inc/optionfield
+
+	div.form-group
+		div.col-sm-12.btn-toolbar
+			.btn-group
+				button.btn.btn-xs.btn-info(data-click-function='addProperty')
+					span.image-btn.glyphicon.glyphicon-plus.add-property
+					span Add another property
+
+			.btn-group
+				button.btn.btn-xs.btn-danger(data-click-function='removeExtract')
+					span.image-btn.glyphicon.glyphicon-remove.add-property
+					span Remove this extract
+
+			.btn-group.fail-button
+				button.btn.btn-xs.btn-danger(data-click-function='removeFail')
+					span.image-btn.glyphicon.glyphicon-remove.add-property
+					span Delete this failure
+- i++
+hr

@@ -1,0 +1,13 @@
+extends /layout
+
+block menu
+	include /inc/menu
+
+block content
+	for log in extractsInLogArray
+		div.panel.panel-default(class='#{log.status}')
+			div.panel-heading #{log.name} (title: #{log.title})
+			div.panel-body
+				p #{log.destination}
+				p #{log.complete} %
+				p #{log.log}

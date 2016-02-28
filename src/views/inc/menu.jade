@@ -1,0 +1,20 @@
+include /mixins
+
+nav.navbar.navbar-default(role="navigation")
+	div.collapse.navbar-collapse
+		ul.nav.navbar-nav
+			li <a href="/logs">View Recent</a>
+			li <a href="/duplicates">View duplicates</a>
+			li
+				a.dropdown(data-toggle="dropdown") Controllers
+					ul.dropdown-menu
+						li <a href="/controller/New">New</a>
+						each val in controllers
+							li <a href="/controller/#{val}">#{val}</a>
+		if saveButton
+			div.navbar-form
+				div.navbar-left(data-click-function='saveChanges')  <button type="submit" class="btn btn-default">Save</button>
+				div.navbar-left(data-click-function='generateQueue')  <button type="submit" class="btn btn-default">Generate</button>
+				div.navbar-left(data-click-function='refreshList')  <button type="submit" class="btn btn-default">Refresh</button>
+			div.navbar-right
+				h5.hidden.status.glyphicon.glyphicon-saved

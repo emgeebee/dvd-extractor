@@ -1,0 +1,17 @@
+#titles{
+	input{
+		&[type=text]{
+			width: 300px;
+		}
+	}
+	.optionfield{
+		label{
+			display:none;
+		}
+		input{
+			&[type=text]{
+				width: 195px;
+			}
+		}
+	}
+}

@@ -1,0 +1,93 @@
+extends /layout
+
+mixin titletemplate(name, extracts)
+	- var id = 'id_' + name.replace(/[ !'.()//,]/g,'_');
+	div.panel-group
+		div.panel.panel-default(class='#{extracts.status}')
+			div.panel-heading
+				p(data-toggle="collapse", data-target='##{id}' , href='#') #{name}
+					if extracts.errorCount
+						span.label-danger.badge #{extracts.errorCount}
+
+					if extracts.successCount
+						span.label-success.badge #{extracts.successCount}
+			div.panel-collapse.collapse(id="#{id}")
+				div.panel-body(data-array='1', data-attribute="#{name}")
+					div.filler
+						input(type='text', placeholder='start')
+						span(data-click-function='autofill')
+							button.btn-xxs.up Fill up
+							button.btn-xxs.down Fill down
+					- var i = 1
+					div.extracts-container
+						button.btn.btn-xs.btn-info(data-click-function='addExtract')
+							span.image-btn.glyphicon.glyphicon-plus.add-property
+							span Add another extract
+						each extract in extracts
+							include /inc/extract
+
+
+block menu
+	- var saveButton = 1
+	include /inc/menu
+
+block content
+	div#json(role="form")
+		
+		div.panel-group
+			div.panel.panel-default
+				div.panel-heading(data-toggle="collapse", data-target='#config')
+					h2 #{title}
+						span.glyphicon.glyphicon-wrench
+				div.panel-collapse.collapse(id="config")
+					div
+						mixin field ('Name', 'title', 'text', title)
+					div
+						mixin field ('Source', 'source','text', json.source)
+					div
+						mixin field ('Destination', 'outputFolder','text', json.outputFolder)
+					div
+						mixin field ('TV Files?', 'tv','checkbox', json.tv)
+					div
+						label.control-label.col-sm-3 Type
+						div.col-sm-7
+							div.radio
+								label
+									input(type='radio', name='type', data-attribute='type', value='0', checked=json.type==0)
+									| DVD
+							div.radio
+								label
+									input(type='radio', name='type', data-attribute='type', value='1', checked=json.type==1)
+									| MPEG
+							div.radio
+								label
+									input(type='radio', name='type', data-attribute='type', value='2', checked=json.type==2)
+									| DVD VOBs
+							div.radio
+								label
+									input(type='radio', name='type', data-attribute='type', value='3', checked=json.type==3)
+									| MP3s
+					div
+						mixin field ('Depth of folders?', 'depth','text', json.depth)
+					
+
+		div.stats(data-click-function='filterDVDs')
+			a(href='#' data-target=".panel") Total number of DVDs = 
+				span.sum
+			a(href='#' data-target=".panel.panel-danger") Total number of incomplete = 
+				span.sum
+			a(href='#' data-target=".panel.panel-success") Total number of successes = 
+				span.sum
+			a(href='#' data-target=".panel.panel-warning") Total number not planned to run = 
+				span.sum
+			a.special(href='#') Total number using no nav = 
+				span.nonav
+		if json.cache == 1
+			p.alert.alert-warning The DVD folder could not be found, hence this list of files is from the cache.
+
+		div#titles(data-object=1, data-attribute="titles")
+			if json.titles
+				each extracts, title in json.titles
+					if title != "undefined"
+						mixin titletemplate (title, extracts)
+
