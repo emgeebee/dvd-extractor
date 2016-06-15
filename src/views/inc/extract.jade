@@ -2,6 +2,7 @@ include /mixins
 
 div.extract.form-horizontal(class='#{extract.status}', data-item='1', data-object='1')
 	h5.extract-title Extract #{i}
+	a(target='_blank' href='https://www.google.co.uk/webhp?sourceid=chrome-instant&ion=1&espv=2&ie=UTF-8#q='+name) Search
 	if extract.logs
 		div.extract-history
 			for log in extract.logs
