@@ -2,6 +2,8 @@
 
 A small application which manages DVD rips
 
+The code for this is in a really messy state! It was a spare time project about 3-4 years ago and I've never got around to tidying it up.
+
 ## Functionality
 
 1. Runs a small node server which shows a UI to explore folders and configure extracts using ffmpeg or handbrake
