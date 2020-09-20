@@ -13,7 +13,6 @@ var _logArchive = __dirname + "/../logs/archive.json";
 var _archivelogFolder = __dirname + "/../logarchive/";
 
 function setLogger(){
-	console.log('3');
 	var logger = new (winston.Logger)({
 		transports: [
 			new (winston.transports.Console)(),
@@ -25,7 +24,6 @@ function setLogger(){
       		})
 		]
 	});
-	console.log('3');
 	return logger;
 }
 
@@ -48,7 +46,7 @@ exports.index = function(req, res){
 }
 
 exports.getItemsFromLogs = function(){
-	var archivelogFolder = extractor.archivelogFolder;
+	var archivelogFolder = _archivelogFolder;
 	var logs = extractor.getFiles(_logfolder);
 	var extractsInLogArray = [];
 	var archivedLogs = [];

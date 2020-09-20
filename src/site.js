@@ -43,7 +43,7 @@ exports.save = function(req, res){
 		}
 	}
 	var newFileName = controller.title
-	fs.writeFileSync(controlFolder + newFileName, JSON.stringify(controller));
+	fs.writeFileSync(controlFolder + newFileName, JSON.stringify(controller, null, 4));
 	var DVDFolder = controller.source;
 	if(controller.source.slice(-1) !== '/'){
 		DVDFolder += '/';
@@ -226,7 +226,7 @@ function compareFileSystemToController(controller, controlFile){
 	}
 	controller.titles = files;
 	delete controller.missingDVDs;
-	fs.writeFileSync(controlFile, JSON.stringify(controller));
+	fs.writeFileSync(controlFile, JSON.stringify(controller, null, 4));
 	return controller;
 };
 
@@ -257,7 +257,7 @@ function saveBackupControls(internalnodeDVDFolder, files, depth, folder){	for (v
 			dvd = folder + '/' + dvd;
 		}		if(!files[dvd]){		}else{
 			try {
-				fs.writeFileSync(internalnodeDVDFolder  + this[c]  + '/control.json', JSON.stringify(files[dvd]));
+				fs.writeFileSync(internalnodeDVDFolder  + this[c]  + '/control.json', JSON.stringify(files[dvd], null, 4));
 			} catch (e){			}
 		}
 		//console.log (list);
@@ -265,6 +265,7 @@ function saveBackupControls(internalnodeDVDFolder, files, depth, folder){	for (v
 };
 
 function checkForMissingVideos(internalnodeDVDFolder, files, depth){
+    console.log('here');
 	var defaultString = extractor.defaultString;
 	var list = {};
 	var DVDs = fs.readdirSync(internalnodeDVDFolder);
@@ -276,7 +277,9 @@ function checkForMissingVideos(internalnodeDVDFolder, files, depth){
 		if(!files[dvd]){
 			list[dvd] = [];
 			try{
+                console.log('trying to load from local backup');
 				list[dvd] = JSON.parse(fs.readFileSync(internalnodeDVDFolder + dvd + '/control.json'));
+                console.log('loaded from local backup', list[dvd]);
 				continue;
 			} catch(err){
 				//logger.info('Brand new file ' + dvd);
@@ -288,7 +291,7 @@ function checkForMissingVideos(internalnodeDVDFolder, files, depth){
 			list[dvd].push(extract);
 		} else {
 			try {
-				fs.writeFileSync(internalnodeDVDFolder  + dvd  + '/control.json', JSON.stringify(files[dvd]));
+				fs.writeFileSync(internalnodeDVDFolder  + dvd  + '/control.json', JSON.stringify(files[dvd], null, 4));
 			} catch (e){			}
 		}
 		//console.log (list);
@@ -297,6 +300,7 @@ function checkForMissingVideos(internalnodeDVDFolder, files, depth){
 };
 
 function checkForMissingDVDs(internalnodeDVDFolder, files, depth, folder){
+    console.log(arguments);
 	var defaultString = extractor.defaultString;
 	var list = {};
 	var DVDs = fs.readdirSync(internalnodeDVDFolder);	var seasonTest = new RegExp('[S][0-9]');
@@ -319,10 +323,13 @@ function checkForMissingDVDs(internalnodeDVDFolder, files, depth, folder){
 		var dvd = DVDs[c];
 		if(folder != undefined && folder != ""){
 			dvd = folder + '/' + dvd;
-		}		if(!files[dvd]){
+		}
+        if(!files[dvd]){
 			//list.push(DVDs[c]);
-			try{
-				list[dvd] = JSON.parse(fs.readFileSync(internalnodeDVDFolder + dvd + '/control.json'));
+			try {
+                console.log('trying to load from local backup', internalnodeDVDFolder, dvd, '/control.json');
+				list[dvd] = JSON.parse(fs.readFileSync(internalnodeDVDFolder + dvd.split('/')[dvd.split('/').length-1] + '/control.json'));
+                console.log('loaded from local backup', internalnodeDVDFolder + dvd + '/control.json', list[dvd]);
 				continue;
 			} catch(err){}
 			var nameArray = dvd.split(' ');
@@ -345,7 +352,9 @@ function checkForMissingDVDs(internalnodeDVDFolder, files, depth, folder){
 					isFilm = 0;
 				}
 			};			var title = dvd.substring(0,dvd.lastIndexOf(season) - 1);
-			title = title.substring(title.indexOf('/')+1);			list[dvd] = [];			if (isFilm == 0){
+			title = title.substring(title.indexOf('/')+1);
+            list[dvd] = [];
+            if (isFilm == 0){
 				for (var j = episodeMin; j <= episodeMax; j++){
 					var extract = {};
 					extract.__fullname = title + ' ' + season + ' E' + j;
@@ -360,7 +369,7 @@ function checkForMissingDVDs(internalnodeDVDFolder, files, depth, folder){
 				extract.options = {};
 				list[dvd].push(extract);			}
 		} else {
-			fs.writeFileSync(internalnodeDVDFolder  + DVDs[c]  + '/control.json', JSON.stringify(files[dvd]));
+			fs.writeFileSync(internalnodeDVDFolder  + DVDs[c]  + '/control.json', JSON.stringify(files[dvd], null, 4));
 		}
 	}
 	return list;
